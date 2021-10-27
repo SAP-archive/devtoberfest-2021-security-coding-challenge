@@ -1,3 +1,3 @@
-ID;title;stock
-1;Wuthering Heights;100
-2;Jane Eyre;500
+ID;title;stock;CreatedBy
+1;Wuthering Heights;100;tester1@sap.com
+2;Jane Eyre;500;tester2@sap.com

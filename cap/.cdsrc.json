@@ -1,1 +1,31 @@
-{}
+{
+    "[development]": {
+        "auth": {
+            "passport": {
+                "strategy": "mock",
+                "users": {
+                    "tester1@sap.com": {
+                        "password": "initial",
+                        "ID": "tester1@sap.com",
+                        "userAttributes": {
+                            "email": "tester1@sap.com"
+                        },
+                        "roles": [
+                            "CatalogViewer"
+                        ]
+                    },
+                    "tester2@sap.com": {
+                        "password": "initial",
+                        "ID": "tester2@sap.com",
+                        "userAttributes": {
+                            "email": "tester2@sap.com"
+                        },
+                        "roles": [
+                            "CatalogManager"
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}

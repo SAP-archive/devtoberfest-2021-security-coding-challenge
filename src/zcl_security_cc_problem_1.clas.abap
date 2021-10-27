@@ -32,7 +32,7 @@ CLASS zcl_security_cc_problem_1 IMPLEMENTATION.
             INTO TABLE @DATA(flights).
     out->write( flights ).
 
-    DATA(dynamicUpdate) = |SEATS_MAX = '{ seatsMax }'|.
+    DATA(dynamicUpdate) = |SEATS_MAX = @seatsMax|.
     UPDATE /dmo/flight
          SET (dynamicUpdate)
        WHERE carrier_id = @carrierId

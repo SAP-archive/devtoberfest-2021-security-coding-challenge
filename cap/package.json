@@ -47,10 +47,28 @@
         "requires": {
             "db": {
                 "kind": "sql"
+            },
+            "auth": {
+                "kind": "basic-auth",
+                "users": {
+                    "alice": {
+                        "password": "123",
+                        "roles": [
+                            "admin"
+                        ]
+                    },
+                    "bob": {
+                        "password": "123",
+                        "roles": [
+                            "builder"
+                        ]
+                    },
+                    "*": false
+                }
+            },
+            "hana": {
+                "deploy-format": "hdbtable"
             }
-        },
-        "hana": {
-            "deploy-format": "hdbtable"
         }
     }
 }

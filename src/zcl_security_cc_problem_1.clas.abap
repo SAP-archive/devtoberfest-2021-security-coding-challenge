@@ -25,7 +25,6 @@ CLASS zcl_security_cc_problem_1 IMPLEMENTATION.
 
   METHOD if_oo_adt_classrun~main.
 
-
     "Check that you have data that matches your input
     SELECT * FROM /dmo/flight
       WHERE carrier_id = @carrierId
@@ -34,7 +33,6 @@ CLASS zcl_security_cc_problem_1 IMPLEMENTATION.
     out->write( flights ).
 
     DATA(dynamicUpdate) = |SEATS_MAX = { cl_abap_dyn_prg=>quote( seatsMax ) }|.
-
     UPDATE /dmo/flight
          SET (dynamicUpdate)
        WHERE carrier_id = @carrierId

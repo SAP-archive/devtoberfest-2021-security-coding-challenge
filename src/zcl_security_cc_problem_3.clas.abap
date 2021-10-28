@@ -16,6 +16,13 @@ ENDCLASS.
 
 CLASS zcl_security_cc_problem_3 IMPLEMENTATION.
   METHOD if_oo_adt_classrun~main.
+    TRY.
+      cl_abap_dyn_prg=>check_table_name_str( val = to_upper( dbTable ) packages = '/DMO/FLIGHT_LEGACY' ).
+      CATCH cx_abap_not_a_table cx_abap_not_in_package.
+        out->write( `You can only select tables from /DMO/FLIGHT_LEGACY package` ).
+        RETURN.
+    ENDTRY.
+
     DATA dref TYPE REF TO data.
     FIELD-SYMBOLS <results> TYPE STANDARD TABLE.
     CREATE DATA dref TYPE STANDARD TABLE OF (dbTable)

@@ -17,3 +17,6 @@ service CatalogService {
         }
     ]) as projection on my.Books;
 }
+
+annotate Books with @(restrict: [ 
+  { grant: ['UPDATE', 'DELETE'], where: 'CreatedBy = $user' } ]);

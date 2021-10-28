@@ -52,13 +52,37 @@
         }
     },
     "cds": {
-        "requires": {
-            "db": {
-                "kind": "sql"
+        "cds": {
+            "requires": {
+                "db": {
+                    "kind": "sql"
+                },
+                "auth": {
+                    "[development]": {
+                        "kind": "basic-auth",
+                        "users": {
+                            "alice": {
+                                "roles": [
+                                    "seeAll"
+                                ]
+                            },
+                            "bob": {
+                                "roles": [
+                                    "builder"
+                                ]
+                            },
+                            "*": false
+                        }
+                    },
+                    "[production]": {
+                        "auth": {
+                            "kind": "jwt-auth"
+                        }
+                    }
+                }
+            },
+            "hana": {
+                "deploy-format": "hdbtable"
             }
-        },
-        "hana": {
-            "deploy-format": "hdbtable"
         }
     }
-}

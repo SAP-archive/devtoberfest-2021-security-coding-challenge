@@ -1,5 +1,14 @@
 using my.bookshop as my from '../db/data-model';
 
 service CatalogService {
-    @readonly entity Books as projection on my.Books;
+    entity Books @(restrict : [
+        {
+            grant : ['READ'],
+            to    : ['basic']
+        },
+        {
+            grant : ['READ', 'UPDATE', 'DELETE', 'WRITE'],
+            to    : ['admin']
+        }
+    ]) as projection on my.Books;
 }

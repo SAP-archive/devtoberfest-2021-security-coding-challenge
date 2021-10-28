@@ -20,7 +20,7 @@ ENDCLASS.
 CLASS zcl_security_cc_problem_2 IMPLEMENTATION.
   METHOD if_oo_adt_classrun~main.
     TRY.
-    DATA lx_root TYPE REF TO cx_root.
+        DATA lx_root TYPE REF TO cx_root.
         DATA(sql) = `CARRIER_ID = ` && cl_abap_dyn_prg=>quote( input ).
         SELECT * FROM /dmo/flight WHERE (sql) INTO table @DATA(results).
         out->write( results ).

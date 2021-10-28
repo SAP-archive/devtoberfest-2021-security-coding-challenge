@@ -7,8 +7,11 @@
     "private": true,
     "dependencies": {
         "@sap/cds": "^5.5.4",
+        "@sap/xssec": "^3.2.9",
+        "cors": "^2.8.5",
         "express": "^4",
-        "hdb": "^0.19"
+        "hdb": "^0.19",
+        "passport": "^0.5.0"
     },
     "devDependencies": {
         "sqlite3": "^5.0.2"
@@ -45,6 +48,10 @@
         "requires": {
             "db": {
                 "kind": "sql"
+            },
+            "uaa": {
+                "kind": "xsuaa",
+                "credentials": {}
             }
         },
         "hana": {

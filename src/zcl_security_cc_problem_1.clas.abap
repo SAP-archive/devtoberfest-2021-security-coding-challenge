@@ -51,9 +51,8 @@ CLASS zcl_security_cc_problem_1 IMPLEMENTATION.
           INTO TABLE @flights.
             IF sy-subrc = 0.
               out->write( flights ).
-        CATCH cx_sy_dynamic_osql_syntax cx_root INTO lx_root.
-          out->write( lx_root ).
-          out->write( |Internal error| ).
+        CATCH cx_sy_dynamic_osql_syntax cx_root INTO root.
+          out->write( root ).
         ENDIF.
       ENDTRY.
     ENDIF.

@@ -7,8 +7,11 @@
     "private": true,
     "dependencies": {
         "@sap/cds": "^5.5.4",
+        "@sap/xssec": "^3.2.9",
+        "cors": "^2.8.5",
         "express": "^4",
-        "hdb": "^0.19"
+        "hdb": "^0.19",
+        "helmet": "^4.6.0"
     },
     "devDependencies": {
         "sqlite3": "^5.0.2"
@@ -45,6 +48,25 @@
         "requires": {
             "db": {
                 "kind": "sql"
+            },
+            "auth": {
+                "kind": "basic-auth",
+                "users": {
+                    "viewer@devtoberfest.sap.com": {
+                        "password": "initial",
+                        "ID": "viewer@devtoberfest.sap.com",
+                        "roles": [
+                            "DevtoberfestViewer"
+                        ]
+                    },
+                    "admin@devtoberfest.sap.com": {
+                        "password": "initial",
+                        "ID": "admin@devtoberfest.sap.com",
+                        "roles": [
+                            "DevtoberfestAdmin"
+                        ]
+                    }
+                }
             }
         },
         "hana": {

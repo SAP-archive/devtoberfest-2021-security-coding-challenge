@@ -8,7 +8,10 @@ cds.on('bootstrap', (app) => {
           directives: {
             ...helmet.contentSecurityPolicy.getDefaultDirectives(),
             // custom settings
-            ...helmet.referrerPolicy({ policy: 'same-origin' })
+            "default-src": ["'self'"],
+            "connect-src": ["'self'", "https://sapui5.hana.ondemand.com/"],
+            "script-src": ["'self'", "'unsafe-inline'","'unsafe-eval'", "http://localhost:4004/", "https://sapui5.hana.ondemand.com/"],
+            "img-src": ["'self'","https://sapui5.hana.ondemand.com/"]
           }
         }
       }))

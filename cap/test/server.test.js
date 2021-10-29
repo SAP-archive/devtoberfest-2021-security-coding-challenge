@@ -1,4 +1,5 @@
 const cds = require('@sap/cds/lib');
+const user = require('@sap/cds/lib/req/user');
 
 const { expect, GET, POST, PATCH, DEL, data } = cds.test(
   'serve',
@@ -6,30 +7,15 @@ const { expect, GET, POST, PATCH, DEL, data } = cds.test(
   '--project',
   `${__dirname}/..`
 );
-
+const { users } = require('./constants');
 data.autoReset(true); // delete + redeploy from CSV before each test
 
-const test = {
-  user: {
-    username: 'user',
-    password: 'user',
-  },
-  alice: {
-    username: 'alice',
-    password: '',
-  },
-  bob: {
-    username: 'bob',
-    password: '',
-  },
-};
-
-let errorMsg;
+// let errorMsg;
 
 describe('devtoberfest-2021-security-coding-challenge', () => {
   it('[CORS][Add A Content Security Policy] GET `/browse/$metadata` - serves ODATA with CORS protection', async () => {
-    const { headers, status, data } = await GET('/browse/$metadata', {
-      auth: test.alice,
+    const { headers, status } = await GET('/browse/$metadata', {
+      auth: users.alice,
     });
     expect(status).to.equal(200);
     expect(headers).to.contain({
@@ -40,130 +26,82 @@ describe('devtoberfest-2021-security-coding-challenge', () => {
     });
   });
 
-  it('[Add authentication to your CAP Service] GET  `/inernal/Books` & `/browse/Books` no-existing-user - should return 401 - Unauthorized', async () => {
-    try {
-      const { headers, status, data } = await GET('/browse/Books', {
-        auth: test.user,
-      });
-    } catch (error) {
-      errorMsg = error.message;
-    }
-    expect(errorMsg).to.equal('401 - Unauthorized');
-
-    try {
-      const { headers, status, data } = await GET('/internal/Books', {
-        auth: test.user,
-      });
-    } catch (error) {
-      errorMsg = error.message;
-    }
-    expect(errorMsg).to.equal('401 - Unauthorized');
+  it('[Add authentication to your CAP Service] GET  `/inernal/Books` & `/browse/Books` <no-existing-user> - should return 401 - Unauthorized', async () => {
+    // https://cap.cloud.sap/docs/node.js/cds-test#be-relaxed-when-checking-error-messages
+    await expect(GET('/browse/$metadata')).to.be.rejectedWith(/401/i);
+    await expect(GET('/browse/Books')).to.be.rejectedWith(/401/i);
+    await expect(GET('/internal/Books')).to.be.rejectedWith(/401/i);
   });
 
-  it('[Add authentication to your CAP Service] GET `/inernal/Books` bob - should return `403 - Forbidden`', async () => {
-    try {
-      const { headers, status, data } = await GET('/internal/Books', {
-        auth: test.bob,
-      });
-    } catch (error) {
-      errorMsg = error.message;
-    }
-    expect(errorMsg).to.equal('403 - Forbidden');
+  it('[Add authentication to your CAP Service] GET `/inernal/Books` <bob> - should return `403 - Forbidden`', async () => {
+    await expect(
+      GET('/internal/Books', { auth: users.bob })
+    ).to.be.rejectedWith(/403/i);
   });
 
-  it('[Add Access Control to your CAP Model/Service] POST `/inernal/Books` & `/browse/Books` bob - should return `403 - Forbidden`', async () => {
-    try {
-      const { headers, status, data } = await POST(
-        '/browse/Books',
-        {},
-        {
-          auth: test.bob,
-        }
-      );
-    } catch (error) {
-      errorMsg = error.message;
-    }
-    expect(errorMsg).to.equal('403 - Forbidden');
+  it('[Add Access Control to your CAP Model/Service] POST `/inernal/Books` & `/browse/Books` <bob> - should return `403 - Forbidden`', async () => {
+    await expect(
+      POST('/internal/Books', {}, { auth: users.bob })
+    ).to.be.rejectedWith(/403/i);
 
-    try {
-      const { headers, status, data } = await POST(
-        '/browse/Books',
-        {},
-        {
-          auth: test.alice,
-        }
-      );
-    } catch (error) {
-      errorMsg = error.message;
-    }
-    expect(errorMsg).to.equal('403 - Forbidden');
+    await expect(
+      POST('/browse/Books', {}, { auth: users.bob })
+    ).to.be.rejectedWith(/403/i);
   });
 
-  it('[Add Access Control to your CAP Model/Service] POST `/inernal/Books` alice - should be succesful`', async () => {
-    const { headers, status, data } = await POST(
+  it('[Add Access Control to your CAP Model/Service] POST `/inernal/Books` <alice> - should be succesful`', async () => {
+    const { data } = await POST(
       '/internal/Books',
       { ID: 77, title: 'test', stock: 10 },
-      {
-        auth: test.alice,
-      }
+      { auth: users.alice }
     );
-    expect(status).to.equal(201);
+    // https://cap.cloud.sap/docs/node.js/cds-test#check-response-data-instead-of-status-codes
+    // expect(status).to.equal(201);
+    expect(data).to.containSubset({ ID: 77 });
   });
 
   it('[Add Access Control to your CAP Model/Service] PATCH `/inernal/Books` alice - should return record with title updated', async () => {
-    const { headers, status, data } = await PATCH(
+    const { data } = await PATCH(
       '/internal/Books(77)',
       { ID: 77, title: 'updated', stock: 10 },
-      {
-        auth: test.alice,
-      }
+      { auth: users.alice }
     );
-    expect(data.title).to.equal('updated');
+    expect(data).to.containSubset({ title: 'updated' });
   });
 
   it('[Add Access Control to your CAP Model/Service] DEL `/inernal/Books` alice - should return `405 - Entity "Books" is not deletable`', async () => {
-    try {
-      const { headers, status, data } = await DEL('/internal/Books(77)', {
-        auth: test.alice,
-      });
-    } catch (error) {
-      errorMsg = error.message;
-    }
-    expect(errorMsg).to.equal('405 - Entity "Books" is not deletable');
+    await expect(
+      DEL('/internal/Books(1)', { auth: users.alice })
+    ).to.be.rejectedWith(/405/i);
   });
 
   it('[Add Access Control to your CAP Model/Service] POST `/inernal/Books` bob - should return `403 - Forbidden`', async () => {
-    try {
-      const { headers, status, data } = await POST(
+    await expect(
+      POST(
         '/internal/Books',
         { ID: 77, title: 'test', stock: 10 },
-        {
-          auth: test.bob,
-        }
-      );
-    } catch (error) {
-      errorMsg = error.message;
-    }
-    expect(errorMsg).to.equal('403 - Forbidden');
+        { auth: users.bob }
+      )
+    ).to.be.rejectedWith(/403/i);
   });
 
   it('[Add Instance Based Authorization (Row Level Checks)] GET `/browse/Books` bob - should return 1 stock', async () => {
-    const { headers, status, data } = await GET('/browse/Books/$count', {
-      auth: test.bob,
+    const { data } = await GET('/browse/Books/$count', {
+      auth: users.bob,
     });
     expect(data).to.equal(1);
   });
 
   it('[Add Instance Based Authorization (Row Level Checks)] GET `/inernal/Book` alice - return 2 stock`', async () => {
-    const { headers, status, data } = await GET('/internal/Books/$count', {
-      auth: test.alice,
+    const { data } = await GET('/internal/Books/$count', {
+      auth: users.alice,
     });
     expect(data).to.equal(2);
   });
 
   it('[Add Instance Based Authorization (Row Level Checks)] GET `/inernal/Book` alice - return 1 stock`', async () => {
-    const { headers, status, data } = await GET('/browse/Books/$count', {
-      auth: test.alice,
+    const { data } = await GET('/browse/Books/$count', {
+      auth: users.alice,
     });
     expect(data).to.equal(1);
   });

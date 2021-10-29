@@ -17,7 +17,19 @@ ENDCLASS.
 CLASS zcl_security_cc_problem_3 IMPLEMENTATION.
   METHOD if_oo_adt_classrun~main.
     DATA dref TYPE REF TO data.
+    DATA dbtab TYPE string.
     FIELD-SYMBOLS <results> TYPE STANDARD TABLE.
+
+    TRY.
+    dbtab =
+      cl_abap_dyn_prg=>check_table_name_str(
+        val = to_upper( dbTable )
+        packages = '/DMO/FLIGHT_LEGACY' ).
+  CATCH cx_abap_not_a_table cx_abap_not_in_package.
+    out->write( 'Wrong input' ).
+    EXIT.
+ENDTRY.
+
     CREATE DATA dref TYPE STANDARD TABLE OF (dbTable)
                      WITH EMPTY KEY.
     ASSIGN dref->* TO <results>.

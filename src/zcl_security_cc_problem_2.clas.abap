@@ -4,6 +4,7 @@ CLASS zcl_security_cc_problem_2 DEFINITION
   CREATE PUBLIC .
 
   PUBLIC SECTION.
+
     INTERFACES if_oo_adt_classrun.
     "Uses Data Model - https://github.com/SAP-samples/abap-platform-refscen-flight
   PROTECTED SECTION.

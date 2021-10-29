@@ -44,6 +44,29 @@
     },
     "cds": {
         "requires": {
+            "auth": {
+                "kind": "basic-auth",
+                "users": {
+                    "mstenzig": {
+                        "password": "test123",
+                        "roles": [
+                            "StoreClerk"
+                        ],
+                        "userAttributes": {
+                            "store": 52
+                        }
+                    },
+                    "admin": {
+                        "password": "admin123",
+                        "roles": [
+                            "admin"
+                        ],
+                        "userAttributes": {
+                            "store": 999
+                        }
+                    }
+                }
+            },
             "db": {
                 "kind": "sql"
             }

@@ -27,6 +27,7 @@ modules:
    requires:
     # Resources extracted from CAP configuration
     - name: devt-capsec-db
+    - name: devt-capsec-uaa
    provides:
     - name: devt-capsec-srv-api      # required by consumers of CAP services (e.g. approuter)
       properties:
@@ -57,4 +58,12 @@ resources:
    properties:
      hdi-service-name: ${service-name}
 
-
+ - name: devt-capsec-uaa # Resource for the security provider
+   type: org.cloudfoundry.managed-service
+   parameters:  # Make sure this says parameters and not properties!!!
+      service-plan: application
+      service: xsuaa
+      path: ./security/xs-security.json
+      config:
+        xsappname: devt-capsec-${space}
+        tenant-mode: dedicated   # use 'shared' for multi-tenant deployments

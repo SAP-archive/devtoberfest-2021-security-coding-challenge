@@ -1,0 +1,33 @@
+{
+  "xsappname": "devt-capsec",
+  "tenant-mode": "dedicated",
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.StoreClerk",
+      "description": "StoreClerk"
+    },
+    {
+      "name": "$XSAPPNAME.admin",
+      "description": "admin"
+    }
+  ],
+  "attributes": [],
+  "role-templates": [
+    {
+      "name": "StoreClerk",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.StoreClerk"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "admin",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.admin"
+      ],
+      "attribute-references": []
+    }
+  ]
+}

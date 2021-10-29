@@ -7,5 +7,7 @@ service CatalogService {
     entity Books as projection on my.Books;
 }
 
-annotate CatalogService with @(restrict: [ 
-  { grant: ['UPDATE'], where: 'stock > 0' } ]);
+annotate CatalogService with @(restrict : [{
+    grant : ['UPDATE'],
+    where : 'stock > 0'
+}]);

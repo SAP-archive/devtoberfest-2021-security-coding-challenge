@@ -30,19 +30,5 @@ annotate Books with @(
             'DELETE'
         ],
         where : 'CreatedBy = $user'
-    }],
-    UI:{
-        LineItem: [
-            {
-                Value: title
-            },{
-                Value: stock,
-                Label: 'Stock'
-            },{
-                Value: createdBy
-            },{
-                Value: createdAt
-            }
-        ]
-    }
+    }]
 );

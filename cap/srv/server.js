@@ -10,7 +10,7 @@ cds.on('bootstrap', (app) => {
             // custom settings
             "default-src": ["'self'"],
             "connect-src": ["'self'", "https://sapui5.hana.ondemand.com/"],
-            "script-src": ["'self'", "'unsafe-inline'","'unsafe-eval'", "http://localhost:4004/", "https://sapui5.hana.ondemand.com/"],
+            "script-src": ["'self'", "'unsafe-inline'","'unsafe-eval'", "https://sapui5.hana.ondemand.com/"],
             "img-src": ["'self'","https://sapui5.hana.ondemand.com/"]
           }
         }

@@ -27,6 +27,7 @@ modules:
    requires:
     # Resources extracted from CAP configuration
     - name: cap-db
+    - name: cap-uaa
    provides:
     - name: srv-api      # required by consumers of CAP services (e.g. approuter)
       properties:
@@ -56,5 +57,13 @@ resources:
      service-plan: hdi-shared
    properties:
      hdi-service-name: ${service-name}
-
+# -------------------------------------------------------------
+ - name: cap-uaa
+# ------------------------------------------------------------
+   type: org.cloudfoundry.managed-service
+   parameters:
+     service-plan: application
+     service: xsuaa
+     path: ./xs-security.json
+     
 

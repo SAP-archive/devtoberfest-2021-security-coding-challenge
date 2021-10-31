@@ -8,7 +8,11 @@
     "dependencies": {
         "@sap/cds": "^5.5.4",
         "express": "^4",
-        "hdb": "^0.19"
+        "hdb": "^0.19",
+        "passport": "^0.4.1",
+        "@sap/xsenv": "^3.1.0",
+        "@sap/xssec": "^3.0.10",
+        "cors": "^2.8.5"
     },
     "devDependencies": {
         "sqlite3": "^5.0.2"

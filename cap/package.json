@@ -7,6 +7,10 @@
     "private": true,
     "dependencies": {
         "@sap/cds": "^5.5.4",
+        "@sap/xssec": "^3.2.9",
+        "cors": "^2.8.5",
+        "helmet": "^4.6.0",
+        "passport": "^0.5.0"
         "express": "^4",
         "hdb": "^0.19"
     },
@@ -43,8 +47,15 @@
     },
     "cds": {
         "requires": {
+            "auth": {
+                "kind": "basic-auth"
+            },
             "db": {
                 "kind": "sql"
+            },
+            "uaa": {
+                "kind": "xsuaa",
+                "credentials": {}
             }
         },
         "hana": {

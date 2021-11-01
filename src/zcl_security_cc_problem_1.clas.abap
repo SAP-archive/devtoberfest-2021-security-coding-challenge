@@ -25,7 +25,7 @@ CLASS zcl_security_cc_problem_1 IMPLEMENTATION.
 
   METHOD if_oo_adt_classrun~main.
 
-     TRY.
+    TRY.
         "Check that you have data that matches your input
         SELECT * FROM /dmo/flight
           WHERE carrier_id = @carrierId
@@ -33,7 +33,7 @@ CLASS zcl_security_cc_problem_1 IMPLEMENTATION.
                 INTO TABLE @DATA(flights).
         out->write( flights ).
 
-         DATA(dynamicUpdate) = |SEATS_MAX = '{ cl_abap_dyn_prg=>check_int_value( i_seatsMax ) }'|.
+        DATA(dynamicUpdate) = |SEATS_MAX = '{ cl_abap_dyn_prg=>check_int_value( i_seatsMax ) }'|.
         UPDATE /dmo/flight
             SET (dynamicUpdate)
           WHERE carrier_id = @carrierId
@@ -45,10 +45,10 @@ CLASS zcl_security_cc_problem_1 IMPLEMENTATION.
             AND connection_id = @connectionId
             INTO TABLE @flights.
         out->write( flights ).
-     CATCH: cx_abap_not_an_integer
+    CATCH: cx_abap_not_an_integer
              cx_sy_dynamic_osql_syntax INTO DATA(lcx).
          out->write( 'Error Occurred' ).   
          out->write( lcx->get_text( ) ).
-     ENDTRY.    
+    ENDTRY.    
   ENDMETHOD.
 ENDCLASS.

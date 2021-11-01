@@ -19,15 +19,15 @@ ENDCLASS.
 
 CLASS zcl_security_cc_problem_2 IMPLEMENTATION.
   METHOD if_oo_adt_classrun~main.
-     TRY.
+    TRY.
       DATA(sql) = `CARRIER_ID = '` && input && `'`.
       SELECT * FROM /dmo/flight WHERE (sql) INTO table @DATA(results).
       out->write( results ).
-     CATCH cx_sy_open_sql_data_error
+    CATCH cx_sy_open_sql_data_error
          cx_sy_dynamic_osql_syntax
          cx_sy_dynamic_osql_semantics INTO DATA(ex).
            out->write('Error Occurred')
            out->write( ex->get_text(  ) ).
-     ENDTRY.   
+    ENDTRY.   
   ENDMETHOD.
 ENDCLASS.

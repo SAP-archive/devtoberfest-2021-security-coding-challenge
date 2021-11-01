@@ -1,1 +1,31 @@
-{}
+{
+    "[development]": {
+        "auth": {
+            "passport": {
+                "strategy": "mock",
+                "users": {
+                    "tinhto_read@gmail.com": {
+                        "password": "devtoberfest2021",
+                        "ID": "tinhto_read@gmail.com",
+                        "userAttributes": {
+                            "email": "tinhto_read@gmail.com"
+                        },
+                        "roles": [
+                            "read_role"
+                        ]
+                    },
+                    "tinhto_update@gmail.com": {
+                        "password": "devtoberfest2021",
+                        "ID": "tinhto_update@gmail.com",
+                        "userAttributes": {
+                            "email": "tinhto_update@gmail.com"
+                        },
+                        "roles": [
+                            "update_role"
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}

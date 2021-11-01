@@ -31,12 +31,16 @@ CLASS zcl_security_cc_problem_1 IMPLEMENTATION.
         AND connection_id = @connectionId
             INTO TABLE @DATA(flights).
     out->write( flights ).
-
-    DATA(dynamicUpdate) = |SEATS_MAX = '{ seatsMax }'|.
-    UPDATE /dmo/flight
-         SET (dynamicUpdate)
-       WHERE carrier_id = @carrierId
-            AND connection_id = @connectionId.
+    
+    TRY.
+      DATA(dynamicUpdate) = |SEATS_MAX = '{ cl_abap_dyn_prg=>check_int_value( seatsMax ) }'|.
+      UPDATE /dmo/flight
+          SET (dynamicUpdate)
+        WHERE carrier_id = @carrierId
+              AND connection_id = @connectionId.
+    CATCH cx_abap_not_an_integer.
+      out->write( `Entered value not allowed for Seat Max` ).
+    ENDTRY.
 
     "Check the data afterwards
     SELECT * FROM /dmo/flight

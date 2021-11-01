@@ -4,11 +4,11 @@ service CatalogService {
         @readonly entity Books @(restrict : [
         {
             grant : [ 'READ' ],
-            to : [ 'Reading_role' ]
+            to : [ 'read_role' ]
         },
         {
             grant : [ '*' ],
-            to : [ 'Changing_role' ]
+            to : [ 'update_role' ]
         }
     ]) as projection on my.Books;
 }

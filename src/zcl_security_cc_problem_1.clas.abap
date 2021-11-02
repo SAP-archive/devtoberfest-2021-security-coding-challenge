@@ -33,6 +33,7 @@ CLASS zcl_security_cc_problem_1 IMPLEMENTATION.
     out->write( flights ).
 
     DATA(dynamicUpdate) = |SEATS_MAX = '{ seatsMax }'|.
+    dynamicUpdate = cl_abap_dyn_prg=>quote( dynamicUpdate ).
     UPDATE /dmo/flight
          SET (dynamicUpdate)
        WHERE carrier_id = @carrierId

@@ -23,6 +23,21 @@ CLASS zcl_security_cc_problem_3 IMPLEMENTATION.
     ASSIGN dref->* TO <results>.
 
     "Do you really want every table to be accessible? Yet it needs to be dynamic and support all tables within your Package
+    TRY.
+        cl_abap_dyn_prg=>check_table_name_str(
+            val               = to_upper(  dbtable )
+            packages          = '/DMO/FLIGHT'
+*            incl_sub_packages = abap_false
+*            bypass_buffer     = abap_false
+*          RECEIVING
+*            val_str           =
+        ).
+*        CATCH cx_abap_not_a_table.
+*        CATCH cx_abap_not_in_package.
+      CATCH cx_abap_not_a_table cx_abap_not_in_package.
+        out->write( 'Table not in package' ).
+        exit.
+    ENDTRY.
     SELECT * FROM (dbTable) INTO TABLE @<results> UP TO 100 ROWS.
     out->write( |Data for table: { dbTable }| ).
     out->write( <results> ).

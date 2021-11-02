@@ -32,11 +32,17 @@ CLASS zcl_security_cc_problem_1 IMPLEMENTATION.
             INTO TABLE @DATA(flights).
     out->write( flights ).
 
-    DATA(dynamicUpdate) = |SEATS_MAX = '{ seatsMax }'|.
-    UPDATE /dmo/flight
-         SET (dynamicUpdate)
-       WHERE carrier_id = @carrierId
-            AND connection_id = @connectionId.
+    TRY.
+    DATA(dynamicUpdate) = |SEATS_MAX = { cl_abap_dyn_prg=>check_int_value( seatsMAX ) }|.
+        UPDATE /dmo/flight
+             SET (dynamicUpdate)
+           WHERE carrier_id = @carrierId
+                AND connection_id = @connectionId.
+      CATCH cx_abap_not_an_integer .
+        out->write( 'Incorrect input!').
+        exit.
+    ENDTRY.
+
 
     "Check the data afterwards
     SELECT * FROM /dmo/flight

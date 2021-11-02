@@ -1,1 +1,31 @@
-{}
+{
+  "[development]": {
+    "auth": {
+      "passport": {
+        "strategy": "mock",
+        "users": {
+          "book.sales@tester.sap.com": {
+            "password": "12345",
+            "ID": "book.sales@test.com",
+            "userAttributes": {
+              "email": "book.sales@test.com"
+            },
+            "roles": [
+              "BookSales"
+            ]
+          },
+          "book.manager@testcom": {
+            "password": "12345",
+            "ID": "book.manager@test.com",
+            "userAttributes": {
+              "email": "book.manager@test.com"
+            },
+            "roles": [
+              "BookManager"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

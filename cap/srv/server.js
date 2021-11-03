@@ -1,5 +1,6 @@
 const cds = require("@sap/cds");
 const cors = require("cors");
+const helmet = require("helmet");
 
 cds.on("bootstrap", (app) => {
   var corsOptions = {
@@ -8,6 +9,16 @@ cds.on("bootstrap", (app) => {
   };
 
   app.use(cors(corsOptions));
+  app.use(
+    helmet({
+      contentSecurityPolicy: {
+        directives: {
+          ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+          // custom settings
+        },
+      },
+    })
+  );
 });
 
 module.exports = cds.server;

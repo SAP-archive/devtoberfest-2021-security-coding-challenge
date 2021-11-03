@@ -51,7 +51,7 @@
       "auth": {
         "kind": "basic-auth",
         "users": {
-          "empoyee": {
+          "employee": {
             "roles": [
               "Employee"
             ]

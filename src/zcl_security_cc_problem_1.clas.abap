@@ -14,7 +14,7 @@ CLASS zcl_security_cc_problem_1 DEFINITION
 
     "During Input Someone Puts Extra SQL Conditions into the input value - SQL Injection!
     "Remember we are simulating the input here, this normally would come from UI or Service Interface
-    CONSTANTS: seatsMax TYPE string VALUE `142', PRICE = '1`.
+    CONSTANTS: seatsMax TYPE string VALUE `142', PRICE = '4`.
 
 
 ENDCLASS.
@@ -32,11 +32,19 @@ CLASS zcl_security_cc_problem_1 IMPLEMENTATION.
             INTO TABLE @DATA(flights).
     out->write( flights ).
 
-    DATA(dynamicUpdate) = |SEATS_MAX = '{ seatsMax }'|.
-    UPDATE /dmo/flight
-         SET (dynamicUpdate)
-       WHERE carrier_id = @carrierId
-            AND connection_id = @connectionId.
+    TRY.
+        DATA(maxSeatsSel) = cl_abap_dyn_prg=>check_int_value( seatsMax ).
+        DATA(dynamicUpdate) = |SEATS_MAX = '{ maxSeatsSel }'|.
+
+        UPDATE /dmo/flight
+             SET (dynamicUpdate)
+           WHERE carrier_id = @carrierId
+                AND connection_id = @connectionId.
+      CATCH cx_abap_not_an_integer.
+        out->write( |Nice try ;)| ).
+      CATCH cx_sy_dynamic_osql_syntax.
+        out->write( |Stupid me| ).
+    ENDTRY.
 
     "Check the data afterwards
     SELECT * FROM /dmo/flight

@@ -19,8 +19,16 @@ ENDCLASS.
 
 CLASS zcl_security_cc_problem_2 IMPLEMENTATION.
   METHOD if_oo_adt_classrun~main.
-    DATA(sql) = `CARRIER_ID = '` && input && `'`.
-    SELECT * FROM /dmo/flight WHERE (sql) INTO table @DATA(results).
+    DATA(carrierId) = cl_abap_dyn_prg=>escape_quotes( input ).
+    DATA(sql) = `CARRIER_ID = '` && carrierId && `'`.
+
+    TRY.
+        SELECT * FROM /dmo/flight WHERE (sql) INTO TABLE @DATA(results).
+      CATCH cx_sy_open_sql_data_error.
+        out->write( |Nice try ;)| ).
+      CATCH cx_sy_dynamic_osql_syntax.
+        out->write( |Stupid me| ).
+    ENDTRY.
     out->write( results ).
   ENDMETHOD.
 ENDCLASS.

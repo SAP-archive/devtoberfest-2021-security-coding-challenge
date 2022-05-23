@@ -25,25 +25,30 @@ CLASS zcl_security_cc_problem_1 IMPLEMENTATION.
 
   METHOD if_oo_adt_classrun~main.
 
-    "Check that you have data that matches your input
-    SELECT * FROM /dmo/flight
-      WHERE carrier_id = @carrierId
-        AND connection_id = @connectionId
-            INTO TABLE @DATA(flights).
-    out->write( flights ).
+    TRY.
+        "Check that you have data that matches your input
+        SELECT * FROM /dmo/flight
+          WHERE carrier_id = @carrierId
+            AND connection_id = @connectionId
+                INTO TABLE @DATA(flights).
+        out->write( flights ).
 
-    DATA(dynamicUpdate) = |SEATS_MAX = '{ seatsMax }'|.
-    UPDATE /dmo/flight
-         SET (dynamicUpdate)
-       WHERE carrier_id = @carrierId
-            AND connection_id = @connectionId.
+        DATA(dynamicUpdate) = |SEATS_MAX = '{ cl_abap_dyn_prg=>check_int_value( seatsMax ) }'|.
+        UPDATE /dmo/flight
+             SET (dynamicUpdate)
+           WHERE carrier_id = @carrierId
+                AND connection_id = @connectionId.
 
-    "Check the data afterwards
-    SELECT * FROM /dmo/flight
-      WHERE carrier_id = @carrierId
-        AND connection_id = @connectionId
-        INTO TABLE @flights.
-    out->write( flights ).
+        "Check the data afterwards
+        SELECT * FROM /dmo/flight
+          WHERE carrier_id = @carrierId
+            AND connection_id = @connectionId
+            INTO TABLE @flights.
+        out->write( flights ).
+
+    CATCH cx_abap_not_an_integer.
+        out->write( `SEATS_MAX should contain an integer value in character representation` ).
+    ENDTRY.
 
   ENDMETHOD.
 ENDCLASS.

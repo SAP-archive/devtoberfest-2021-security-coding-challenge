@@ -1,54 +1,101 @@
 {
-    "name": "cap",
-    "version": "1.0.0",
-    "description": "A simple CAP project.",
-    "repository": "<Add your repository here>",
-    "license": "UNLICENSED",
-    "private": true,
-    "dependencies": {
-        "@sap/cds": "^5.5.4",
-        "express": "^4",
-        "hdb": "^0.19"
+  "name": "cap",
+  "version": "1.0.0",
+  "description": "A simple CAP project.",
+  "repository": "<Add your repository here>",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@sap/audit-logging": "^5.1.0",
+    "@sap/cds": "^5.5.4",
+    "@sap/xssec": "^3.2.9",
+    "cors": "^2.8.5",
+    "express": "^4",
+    "hdb": "^0.19",
+    "helmet": "^4.6.0",
+    "passport": "^0.5.0"
+  },
+  "devDependencies": {
+    "axios": "^0.24.0",
+    "chai": "^4.3.4",
+    "chai-as-promised": "^7.1.1",
+    "chai-subset": "^1.6.0",
+    "eslint": "^8.1.0",
+    "jest": "^27.3.1",
+    "sqlite3": "^5.0.2"
+  },
+  "scripts": {
+    "start": "cds run",
+    "mocha": "npx mocha || echo",
+    "jest": "npx jest",
+    "test": "npm run jest -- --silent"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testTimeout": 20000,
+    "testMatch": [
+      "**/*.test.js"
+    ]
+  },
+  "mocha": {
+    "parallel": true
+  },
+  "eslintConfig": {
+    "extends": "eslint:recommended",
+    "env": {
+      "es2020": true,
+      "node": true,
+      "jest": true,
+      "mocha": true
     },
-    "devDependencies": {
-        "sqlite3": "^5.0.2"
+    "globals": {
+      "SELECT": true,
+      "INSERT": true,
+      "UPDATE": true,
+      "DELETE": true,
+      "CREATE": true,
+      "DROP": true,
+      "CDL": true,
+      "CQL": true,
+      "CXL": true,
+      "cds": true
     },
-    "scripts": {
-        "start": "cds run"
-    },
-    "eslintConfig": {
-        "extends": "eslint:recommended",
-        "env": {
-            "es2020": true,
-            "node": true,
-            "jest": true,
-            "mocha": true
-        },
-        "globals": {
-            "SELECT": true,
-            "INSERT": true,
-            "UPDATE": true,
-            "DELETE": true,
-            "CREATE": true,
-            "DROP": true,
-            "CDL": true,
-            "CQL": true,
-            "CXL": true,
-            "cds": true
-        },
-        "rules": {
-            "no-console": "off",
-            "require-atomic-updates": "off"
-        }
-    },
-    "cds": {
-        "requires": {
-            "db": {
-                "kind": "sql"
-            }
-        },
-        "hana": {
-            "deploy-format": "hdbtable"
-        }
+    "rules": {
+      "no-console": "off",
+      "require-atomic-updates": "off"
     }
+  },
+  "cds": {
+    "requires": {
+      "db": {
+        "kind": "sql"
+      },
+      "auth": {
+        "[development]": {
+          "kind": "basic-auth",
+          "users": {
+            "alice": {
+              "roles": [
+                "seeAll"
+              ]
+            },
+            "bob": {
+              "roles": [
+                "builder"
+              ]
+            },
+            "*": false
+          }
+        },
+        "[production]": {
+          "auth": {
+            "kind": "jwt-auth"
+          }
+        }
+      }
+    },
+    "hana": {
+      "deploy-format": "hdbtable"
+    }
+  }
 }

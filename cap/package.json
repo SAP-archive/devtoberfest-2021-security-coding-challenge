@@ -7,8 +7,10 @@
     "private": true,
     "dependencies": {
         "@sap/cds": "^5.5.4",
+        "cors": "^2.8.5",
         "express": "^4",
-        "hdb": "^0.19"
+        "hdb": "^0.19",
+        "helmet": "^4.6.0"
     },
     "devDependencies": {
         "sqlite3": "^5.0.2"
@@ -45,10 +47,28 @@
         "requires": {
             "db": {
                 "kind": "sql"
+            },
+            "auth": {
+                "kind": "basic-auth",
+                "users": {
+                    "alice": {
+                        "password": "123",
+                        "roles": [
+                            "admin"
+                        ]
+                    },
+                    "bob": {
+                        "password": "123",
+                        "roles": [
+                            "builder"
+                        ]
+                    },
+                    "*": false
+                }
+            },
+            "hana": {
+                "deploy-format": "hdbtable"
             }
-        },
-        "hana": {
-            "deploy-format": "hdbtable"
         }
     }
 }

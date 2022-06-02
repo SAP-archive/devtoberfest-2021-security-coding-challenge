@@ -33,10 +33,16 @@ CLASS zcl_security_cc_problem_1 IMPLEMENTATION.
     out->write( flights ).
 
     DATA(dynamicUpdate) = |SEATS_MAX = '{ seatsMax }'|.
+    dynamicUpdate = cl_abap_dyn_prg=>quote( dynamicUpdate ).
+
+    TRY.
     UPDATE /dmo/flight
          SET (dynamicUpdate)
        WHERE carrier_id = @carrierId
             AND connection_id = @connectionId.
+            CATCH cx_sy_dynamic_osql_syntax.
+    out->write( 'Wrong input' ).
+ENDTRY.
 
     "Check the data afterwards
     SELECT * FROM /dmo/flight

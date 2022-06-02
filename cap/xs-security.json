@@ -1,0 +1,33 @@
+{
+  "xsappname": "cap",
+  "tenant-mode": "dedicated",
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.CatalogViewer",
+      "description": "CatalogViewer"
+    },
+    {
+      "name": "$XSAPPNAME.CatalogManager",
+      "description": "CatalogManager"
+    }
+  ],
+  "attributes": [],
+  "role-templates": [
+    {
+      "name": "CatalogViewer",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.CatalogViewer"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "CatalogManager",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.CatalogManager"
+      ],
+      "attribute-references": []
+    }
+  ]
+}

@@ -6,9 +6,14 @@
     "license": "UNLICENSED",
     "private": true,
     "dependencies": {
+        "@sap/audit-logging": "^5.1.0",
         "@sap/cds": "^5.5.4",
+        "@sap/xssec": "^3.2.9",
+        "cors": "^2.8.5",
         "express": "^4",
-        "hdb": "^0.19"
+        "hdb": "^0.19",
+        "helmet": "^4.6.0",
+        "passport": "^0.5.0"
     },
     "devDependencies": {
         "sqlite3": "^5.0.2"
@@ -43,6 +48,36 @@
     },
     "cds": {
         "requires": {
+            "[development]": {
+                "auth": {
+                    "kind": "basic-auth",
+                    "users": {
+                        "mstenzig": {
+                            "password": "test123",
+                            "roles": [
+                                "StoreClerk"
+                            ],
+                            "userAttributes": {
+                                "store": 52
+                            }
+                        },
+                        "admin": {
+                            "password": "admin123",
+                            "roles": [
+                                "admin"
+                            ],
+                            "userAttributes": {
+                                "store": 999
+                            }
+                        }
+                    }
+                }
+            },
+            "[production]": {
+                "auth": {
+                    "kind": "xsuaa-auth"
+                }
+            },
             "db": {
                 "kind": "sql"
             }

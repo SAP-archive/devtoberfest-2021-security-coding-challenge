@@ -32,18 +32,24 @@ CLASS zcl_security_cc_problem_1 IMPLEMENTATION.
             INTO TABLE @DATA(flights).
     out->write( flights ).
 
-    DATA(dynamicUpdate) = |SEATS_MAX = '{ seatsMax }'|.
-    UPDATE /dmo/flight
-         SET (dynamicUpdate)
-       WHERE carrier_id = @carrierId
-            AND connection_id = @connectionId.
+    TRY.
+        DATA lx_root TYPE REF TO cx_root.
+        DATA(dynamicUpdate) = |SEATS_MAX = { cl_abap_dyn_prg=>quote( seatsMax ) }|.
+        UPDATE /dmo/flight
+             SET (dynamicUpdate)
+           WHERE carrier_id = @carrierId
+                AND connection_id = @connectionId.
 
-    "Check the data afterwards
-    SELECT * FROM /dmo/flight
-      WHERE carrier_id = @carrierId
-        AND connection_id = @connectionId
-        INTO TABLE @flights.
-    out->write( flights ).
+        "Check the data afterwards
+        SELECT * FROM /dmo/flight
+          WHERE carrier_id = @carrierId
+            AND connection_id = @connectionId
+            INTO TABLE @flights.
+        out->write( flights ).
+      CATCH cx_sy_dynamic_osql_syntax cx_root INTO lx_root.
+        out->write( lx_root ).
+        out->write( |Internal error| ).
+    ENDTRY.
 
   ENDMETHOD.
 ENDCLASS.

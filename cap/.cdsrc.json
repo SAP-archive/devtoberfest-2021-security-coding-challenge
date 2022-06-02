@@ -1,1 +1,24 @@
-{}
+{
+    "[development]": {
+      "auth": {
+        "passport": {
+          "users": {
+            "viewer@devtoberfest.sap.com": {
+              "password": "initial",
+              "ID": "viewer@devtoberfest.sap.com",
+              "roles": [
+                "DevtoberfestViewer"
+              ]
+            },
+            "admin@devtoberfest.sap.com": {
+              "password": "initial",
+              "ID": "admin@devtoberfest.sap.com",
+              "roles": [
+                "DevtoberfestAdmin"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }

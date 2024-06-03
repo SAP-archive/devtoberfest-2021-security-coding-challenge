@@ -1,3 +1,5 @@
+[![Not Maintained](https://img.shields.io/badge/Maintenance%20Level-Not%20Maintained-yellow.svg)](https://gist.github.com/cheerfulstoic/d107229326a01ff0f333a1d3476e068d)
+
 # Devtoberfest 2021 Security Week Coding Challenge
 
 [![REUSE status](https://api.reuse.software/badge/github.com/SAP-samples/devtoberfest-2021-security-coding-challenge)](https://api.reuse.software/info/github.com/SAP-samples/devtoberfest-2021-security-coding-challenge)

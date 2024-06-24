@@ -25,18 +25,27 @@ CLASS zcl_security_cc_problem_1 IMPLEMENTATION.
 
   METHOD if_oo_adt_classrun~main.
 
+    TRY.
+      cl_abap_dyn_prg=>check_int_value( seatsMax ).
+    CATCH cx_abap_not_an_integer.
+      out->write( '"' && seatsMax && '"' && | is not a number| ).
+      RETURN.
+    ENDTRY.
+
     "Check that you have data that matches your input
     SELECT * FROM /dmo/flight
       WHERE carrier_id = @carrierId
         AND connection_id = @connectionId
             INTO TABLE @DATA(flights).
     out->write( flights ).
-
-    DATA(dynamicUpdate) = |SEATS_MAX = '{ seatsMax }'|.
-    UPDATE /dmo/flight
-         SET (dynamicUpdate)
-       WHERE carrier_id = @carrierId
-            AND connection_id = @connectionId.
+    
+    "IF seatsMax CO '0123456789'.
+      DATA(dynamicUpdate) = |SEATS_MAX = '{ seatsMax }'|.
+      UPDATE /dmo/flight
+          SET (dynamicUpdate)
+        WHERE carrier_id = @carrierId
+              AND connection_id = @connectionId.
+    "ENDIF.
 
     "Check the data afterwards
     SELECT * FROM /dmo/flight

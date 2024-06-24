@@ -1,0 +1,21 @@
+{
+    "name": "cap-srv",
+    "version": "1.0.0",
+    "description": "Used for the application service layer alone of the application",
+    "dependencies": {
+        "express": "^4.17.1",
+        "path": "^0.12.7",
+        "@sap/xssec": "^3.2",
+        "@sap/xsenv": "^3.1",
+        "@sap/logging": "^6.0",
+        "cors": "^2.8.5",
+        "passport": "0.5.0"
+    },
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node server"
+    },
+    "author": "Vaibhav GB",
+    "license": "ISC"
+}

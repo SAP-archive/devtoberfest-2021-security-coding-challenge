@@ -1,0 +1,35 @@
+{
+	"xsappname": "cap",
+	"tenant-mode": "dedicated",
+	"description": "Security profile of called application",
+	"scopes": [{
+		"name": "$XSAPPNAME.Read",
+		"description": "Read Scope"
+    },
+    {
+		"name": "$XSAPPNAME.Write",
+		"description": "Write Scope"
+	}
+    ],
+    "authorities":["$XSAPPNAME.Read"],
+	"role-templates": [{
+		"name": "token_generator",
+		"description": "UAA",
+		"scope-references": [
+			"uaa.user"
+		]
+	}, {
+		"name": "Viewer",
+		"description": "Viewer Role",
+		"scope-references": [
+			"$XSAPPNAME.Read"
+		]
+	}, {
+		"name": "Manager",
+		"description": "Manage Access",
+		"scope-references": [
+			"$XSAPPNAME.Write"
+		]
+	}
+	]
+}

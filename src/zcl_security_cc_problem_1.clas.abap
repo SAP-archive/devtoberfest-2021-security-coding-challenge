@@ -23,6 +23,7 @@ ENDCLASS.
 
 CLASS zcl_security_cc_problem_1 IMPLEMENTATION.
 
+
   METHOD if_oo_adt_classrun~main.
 
     "Check that you have data that matches your input
@@ -32,7 +33,13 @@ CLASS zcl_security_cc_problem_1 IMPLEMENTATION.
             INTO TABLE @DATA(flights).
     out->write( flights ).
 
-    DATA(dynamicUpdate) = |SEATS_MAX = '{ seatsMax }'|.
+    TRY.
+        DATA(dynamicUpdate) = |SEATS_MAX = '{ CONV i( seatsMax ) }'|.
+      CATCH cx_sy_conversion_no_number.
+        out->write( `No valid input.` ).
+        RETURN.
+    ENDTRY.
+
     UPDATE /dmo/flight
          SET (dynamicUpdate)
        WHERE carrier_id = @carrierId
@@ -46,4 +53,6 @@ CLASS zcl_security_cc_problem_1 IMPLEMENTATION.
     out->write( flights ).
 
   ENDMETHOD.
+
+
 ENDCLASS.

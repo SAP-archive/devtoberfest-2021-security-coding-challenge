@@ -1,1 +1,31 @@
-{}
+{
+    "[development]": {
+        "auth": {
+            "passport": {
+                "strategy": "mock",
+                "users": {
+                    "read@amauryvanespen.fr": {
+                        "password": "devtoberfest2021",
+                        "ID": "read@amauryvanespen.fr",
+                        "userAttributes": {
+                            "email": "read@amauryvanespen.fr"
+                        },
+                        "roles": [
+                            "read_role"
+                        ]
+                    },
+                    "update@amauryvanespen.fr": {
+                        "password": "devtoberfest2021",
+                        "ID": "update@amauryvanespen.fr",
+                        "userAttributes": {
+                            "email": "update@amauryvanespen.fr"
+                        },
+                        "roles": [
+                            "update_role"
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}

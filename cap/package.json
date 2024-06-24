@@ -6,12 +6,41 @@
     "license": "UNLICENSED",
     "private": true,
     "dependencies": {
-        "@sap/cds": "^5.5.4",
         "express": "^4",
-        "hdb": "^0.19"
+        "passport": "^0.5.0",
+        "helmet": "^4.6.0",
+        "cors": "^2.8.5",
+        "hdb": "^0.19",
+        "@sap/cds": "^5.5.4",
+        "@sap/xsenv": "^3.1.1",
+        "@sap/xssec": "^3.2.9",
+        "@sap/hana-client": "^2.10.15",
+        "@sap/audit-logging": "^5.1.0"
     },
     "devDependencies": {
         "sqlite3": "^5.0.2"
+    },
+    "engines": {
+        "node": ">=14"
+    },
+    "cds": {
+        "requires": {
+            "db": {
+                "kind": "sql"
+            },
+            "uaa": {
+                "kind": "xsuaa",
+                "users": {
+                    "alice": { "roles": ["all_books"] },
+                    "bob": { "roles": ["books_with_stock_u200"] },
+                    "*": true
+                  },
+                "credentials": {}
+            }
+        },
+        "hana": {
+            "deploy-format": "hdbtable"
+        }
     },
     "scripts": {
         "start": "cds run"
@@ -39,16 +68,6 @@
         "rules": {
             "no-console": "off",
             "require-atomic-updates": "off"
-        }
-    },
-    "cds": {
-        "requires": {
-            "db": {
-                "kind": "sql"
-            }
-        },
-        "hana": {
-            "deploy-format": "hdbtable"
         }
     }
 }

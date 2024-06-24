@@ -1,0 +1,22 @@
+{
+    "xsappname": "cap",
+    "tenant-mode": "dedicated",
+    "scopes": [
+      {
+        "name": "$XSAPPNAME.Viewer",
+        "description": "Viewer"
+      }
+    ],
+    "attributes": [],
+    "role-templates": [
+      {
+        "name": "ViewerRole",
+        "description": "Role as Viewer",
+        "scope-references": [
+          "$XSAPPNAME.Viewer"
+        ],
+        "attribute-references": []
+      }
+    ]
+  }
+  

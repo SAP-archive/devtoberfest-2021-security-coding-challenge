@@ -1,7 +1,3 @@
-## Generated mta.yaml based on template version 0.4.0
-## appName = cap
-## language=nodejs; multitenant=false
-## approuter=
 _schema-version: '3.1'
 ID: cap
 version: 1.0.0
@@ -17,44 +13,72 @@ build-parameters:
       - npx -p @sap/cds-dk cds build --production
 
 modules:
- # --------------------- SERVER MODULE ------------------------
  - name: cap-srv
- # ------------------------------------------------------------
    type: nodejs
    path: gen/srv
    parameters:
      buildpack: nodejs_buildpack
    requires:
-    # Resources extracted from CAP configuration
     - name: cap-db
+    - name: cap-xsuaa
    provides:
-    - name: srv-api      # required by consumers of CAP services (e.g. approuter)
+    - name: srv-api 
       properties:
         srv-url: ${default-url}
 
- # -------------------- SIDECAR MODULE ------------------------
  - name: cap-db-deployer
- # ------------------------------------------------------------
    type: hdb
    path: gen/db  
    parameters:
      buildpack: nodejs_buildpack
    requires:
-    # 'hana' and 'xsuaa' resources extracted from CAP configuration
     - name: cap-db
-
+    - name: cap-xsuaa
 
 resources:
- # services extracted from CAP configuration
- # 'service-plan' can be configured via 'cds.requires.<name>.vcap.plan'
-# ------------------------------------------------------------
+
  - name: cap-db
-# ------------------------------------------------------------
    type: com.sap.xs.hdi-container
    parameters:
-     service: hana  # or 'hanatrial' on trial landscapes
+     service: hana
      service-plan: hdi-shared
    properties:
      hdi-service-name: ${service-name}
 
+ - name: cap-xsuaa
+   type: org.cloudfoundry.managed-service
+   parameters:
+    service-plan: application
+    service: xsuaa
+    config:
+      xsappname: cap-xsuaa-${space}
+      tenant-mode: dedicated
+      scopes:
+      - name: "$XSAPPNAME.Admin"
+        description: Administrate the application
+      - name: "$XSAPPNAME.User"
+        description: Use the application
+      role-templates:
+      - name: Admin
+        description: Admin
+        scope-references:
+          - "$XSAPPNAME.Admin"
+      - name: User
+        description: User
+        scope-references:
+          - "$XSAPPNAME.User"
+      role-collections:
+      - name: Admin
+        description: Admin Role Collection
+        role-template-references:
+          - "$XSAPPNAME.Admin"
+      - name: User
+        description: User Role Collection
+        role-template-references:
+          - "$XSAPPNAME.User"
+      oauth2-configuration:
+        redirect-uris: 
+          - "http://localhost:*/**"
+          - "http*://*.*.trial.applicationstudio.cloud.sap/**"
+          - "http*://*.cfapps.*.hana.ondemand.com/**"
 

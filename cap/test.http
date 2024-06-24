@@ -1,0 +1,38 @@
+### Read without authenticatino
+GET http://localhost:4004/catalog/Books HTTP/1.1
+
+### Read all with employee
+GET http://localhost:4004/catalog/Books HTTP/1.1
+Authorization: Basic employee:
+
+### Single Read
+GET http://localhost:4004/catalog/Books(1) HTTP/1.1
+Authorization: Basic employee:
+
+### Write with employee
+PATCH http://localhost:4004/catalog/Books(1) HTTP/1.1
+Authorization: Basic employee:
+content-type: application/json
+
+{
+    "stock": 200
+}
+
+### Delete with employee
+DELETE http://localhost:4004/catalog/Books(1) HTTP/1.1
+Authorization: Basic employee:
+
+
+### Write with admin
+PATCH http://localhost:4004/catalog/Books(1) HTTP/1.1
+Authorization: Basic admin:
+content-type: application/json
+
+{
+    "stock": 200
+}
+
+### Delete with admin
+DELETE http://localhost:4004/catalog/Books(1) HTTP/1.1
+Authorization: Basic admin:
+
